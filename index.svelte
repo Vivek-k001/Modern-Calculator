@@ -74,7 +74,7 @@
         <button on:click={() => appendNumber("7")}>7</button>
         <button on:click={() => appendNumber("8")}>8</button>
         <button on:click={() => appendNumber("9")}>9</button>
-        <button on:click={() => setOperator("")}></button>
+        <button on:click={() => setOperator("*")}></button>
   
         <button on:click={() => appendNumber("0")}>0</button>
         <button on:click={clearDisplay}>C</button>
