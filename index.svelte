@@ -54,7 +54,7 @@
   </script>
   
   <main>
-    <h1>Calculator</h1>
+    <h1 id="title_name">CALCULATOR</h1>
   
     <div class="calculator">
       <div class="display">
@@ -89,13 +89,16 @@
       text-align: center;
       font-family: Arial, sans-serif;
     }
+    #title_name{
+      color: #e0e1e1;
+    }
   
     .calculator {
       display: inline-block;
       background-color: #f0f0f0;
       border-radius: 10px;
       padding: 20px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0px 4px 10px rgba(0.1, 0.1, 0.1, 0.1);
     }
   
     .display p {
