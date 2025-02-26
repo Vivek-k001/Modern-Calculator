@@ -1,10 +1,18 @@
 <script>
   let displayValue = '0';
-  let firstOperand = null;
-  let operator = null;
+  let liveAnswer = '0'; // Live answer value
   let darkMode = false;
   let showHistory = false;
   let history = [];
+
+  function updateLiveAnswer() {
+    try {
+      let result = eval(displayValue.replace('%', '/100'));
+      liveAnswer = isNaN(result) ? '' : result.toString();
+    } catch {
+      liveAnswer = '';
+    }
+  }
 
   function handleNumberClick(number) {
     if (displayValue === '0') {
@@ -12,47 +20,36 @@
     } else {
       displayValue += number.toString();
     }
+    updateLiveAnswer();
   }
 
   function handleOperatorClick(op) {
-    firstOperand = parseFloat(displayValue);
-    operator = op;
-    displayValue = '0';
+    displayValue += ` ${op} `;
+    updateLiveAnswer();
+  }
+
+  function handleParenthesesClick() {
+    const openCount = (displayValue.match(/\(/g) || []).length;
+    const closeCount = (displayValue.match(/\)/g) || []).length;
+    displayValue += openCount <= closeCount ? '(' : ')';
+    updateLiveAnswer();
   }
 
   function handleEqualsClick() {
-    const secondOperand = parseFloat(displayValue);
-    let result = null;
-
-    switch (operator) {
-      case '+':
-        result = firstOperand + secondOperand;
-        break;
-      case '-':
-        result = firstOperand - secondOperand;
-        break;
-      case '*':
-        result = firstOperand * secondOperand;
-        break;
-      case '/':
-        result = firstOperand / secondOperand;
-        break;
-      default:
-        return;
+    try {
+      let result = eval(displayValue.replace('%', '/100'));
+      history = [`${displayValue} = ${result}`, ...history].slice(0, 5);
+      displayValue = result.toString();
+      liveAnswer = result.toString();
+    } catch {
+      displayValue = 'Error';
+      liveAnswer = '';
     }
-
-    const calculation = `${firstOperand} ${operator} ${secondOperand} = ${result}`;
-    history = [calculation, ...history].slice(0, 5); // Store last 5 calculations
-
-    displayValue = result.toString();
-    firstOperand = null;
-    operator = null;
   }
 
   function handleClearClick() {
     displayValue = '0';
-    firstOperand = null;
-    operator = null;
+    liveAnswer = '0';
     history = [];
   }
 
@@ -67,27 +64,38 @@
 
 <div class="calculator" class:dark={darkMode}>
   <button class="dark-mode-toggle" on:click={toggleDarkMode}></button>
-  <div class="display">{displayValue}</div>
+
+  <div class="display">
+    <div class="live-answer">{liveAnswer}</div>
+    <div class="main-display">{displayValue}</div>
+  </div>
 
   <div class="buttons">
     {#if !showHistory}
       <button on:click={handleClearClick}>C</button>
+      <button on:click={handleParenthesesClick}>()</button>
+      <button on:click={() => handleOperatorClick('%')}>%</button>
+      <button on:click={() => handleOperatorClick('/')}>/</button>
+
       <button on:click={() => handleNumberClick(7)}>7</button>
       <button on:click={() => handleNumberClick(8)}>8</button>
       <button on:click={() => handleNumberClick(9)}>9</button>
-      <button on:click={() => handleOperatorClick('/')}>/</button>
+      <button on:click={() => handleOperatorClick('*')}>*</button>
+
       <button on:click={() => handleNumberClick(4)}>4</button>
       <button on:click={() => handleNumberClick(5)}>5</button>
       <button on:click={() => handleNumberClick(6)}>6</button>
-      <button on:click={() => handleOperatorClick('*')}>*</button>
+      <button on:click={() => handleOperatorClick('-')}>-</button>
+
       <button on:click={() => handleNumberClick(1)}>1</button>
       <button on:click={() => handleNumberClick(2)}>2</button>
       <button on:click={() => handleNumberClick(3)}>3</button>
-      <button on:click={() => handleOperatorClick('-')}>-</button>
-      <button on:click={() => handleNumberClick(0)}>0</button>
       <button on:click={() => handleOperatorClick('+')}>+</button>
+
+      <button on:click={toggleHistory}>H</button>
+      <button on:click={() => handleNumberClick(0)}>0</button>
+      <button on:click={() => handleOperatorClick('.')}>.</button>
       <button on:click={handleEqualsClick}>=</button>
-      <button class="history-toggle" on:click={toggleHistory}>H</button>
     {/if}
 
     {#if showHistory}
@@ -96,7 +104,7 @@
         {#each history as item}
           <p>{item}</p>
         {/each}
-        <button class="history-toggle" on:click={toggleHistory}>Close</button>
+        <button on:click={toggleHistory}>Close</button>
       </div>
     {/if}
   </div>
@@ -104,14 +112,15 @@
 
 <style>
   .calculator {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
     width: 220px;
-    height: 350px;
+    height: 400px;
     margin: 20px auto;
     padding: 20px;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
     position: relative;
     transition: background-color 0.5s ease-in-out, border 0.5s ease-in-out;
   }
@@ -123,16 +132,18 @@
 
   .display {
     width: 92%;
-    height: 35px;
-    margin-bottom: 20px;
+    height: 50px;
     padding: 10px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 20px;
     font-size: 24px;
-    text-align: right;
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
   }
 
   .calculator.dark .display {
@@ -141,13 +152,33 @@
     color: #fff;
   }
 
+  .live-answer {
+    font-size: 14px;
+    color: #888;
+    position: absolute;
+    top: 5px;
+    right: 12px;
+  }
+
+  .calculator.dark .live-answer {
+    color: #bbb;
+  }
+
+  .main-display {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+
   .buttons {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
+    margin-top: 10px;
   }
 
   button {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
     width: 100%;
     height: 50px;
     padding: 10px;
@@ -156,7 +187,8 @@
     border-radius: 5px;
     font-size: 18px;
     cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   }
 
   .calculator.dark button {
@@ -167,10 +199,12 @@
 
   button:hover {
     background-color: #f5f5f5;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
   }
 
   .calculator.dark button:hover {
     background-color: #666;
+    box-shadow: 0 3px 7px rgba(255, 255, 255, 0.2);
   }
 
   .dark-mode-toggle {
@@ -180,40 +214,15 @@
     background-color: grey;
     border: none;
     position: absolute;
-    top: 10px;
+    top: 5px;
     right: 10px;
     cursor: pointer;
     z-index: 2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease-in-out;
   }
 
   .calculator.dark .dark-mode-toggle {
     background-color: #777;
-  }
-
-  .history-toggle {
-    grid-column: span 2;
-    background-color: #ddd;
-  }
-
-  .calculator.dark .history-toggle {
-    background-color: #888;
-  }
-
-  .history-box {
-    grid-column: span 4;
-    background-color: #fff;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    text-align: center;
-    transition: opacity 0.3s ease-in-out;
-  }
-
-  .calculator.dark .history-box {
-    background-color: #444;
-    border: 1px solid #666;
-    color: #fff;
   }
 </style>
