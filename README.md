@@ -50,10 +50,3 @@ A modern, responsive calculator built using **Svelte**, featuring a **live answe
 *Calculation History Feature*  
 
 ---
-
-Enjoy using and customizing the calculator! 🚀🎉  
-
----
-..
-...
-....
