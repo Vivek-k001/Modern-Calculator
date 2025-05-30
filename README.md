@@ -1,7 +1,7 @@
 ﻿
 ---
 
-# Svelte Calculator with Live Answer & Dark Mode  
+# SVELTE CALCULATOR WITH LIVE ANSWER & DARK MODE  
 
 A modern, responsive calculator built using **Svelte**, featuring a **live answer preview**, **toggleable dark mode**, and a **minimalist, user-friendly design**.  
 
