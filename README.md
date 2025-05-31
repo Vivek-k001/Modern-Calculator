@@ -17,7 +17,7 @@ A modern, responsive calculator built using **Svelte**, featuring a **live answe
 
 ## Installation & Usage  
 
-1. Clone the repository:  
+1. Clone my repository:  
    ```bash
    git clone https://github.com/Vivek-k001/Modern-Calculator.git
    ```  
@@ -37,16 +37,20 @@ A modern, responsive calculator built using **Svelte**, featuring a **live answe
 
 ## Preview of the Calculator  
 
-![Calculator Light Mode](preview/light-mode.png)  
 *Light Mode*  
+![Calculator Light Mode](preview/light-mode.png)  
 
-![Calculator Dark Mode](preview/dark-mode.png)  
 *Dark Mode*  
+![Calculator Dark Mode](preview/dark-mode.png)  
 
-![Live Answer Mode](preview/live.png)  
+*RGB Mode*  
+![Calculator RGB Mode](preview/RGB-mode.mp4) 
+
 *Live Answer Feature*  
+![Live Answer Mode](preview/live.png)  
 
-![Show History Mode](preview/history.png)  
 *Calculation History Feature*  
+![Show History Mode](preview/history.png)  
+
 
 ---
