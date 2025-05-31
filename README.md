@@ -44,7 +44,7 @@ A modern, responsive calculator built using **Svelte**, featuring a **live answe
 ![Calculator Dark Mode](preview/dark-mode.png)  
 
 *RGB Mode*  
-![Calculator RGB Mode](preview/RGB-mode.mp4) 
+![Calculator RGB Mode](preview/RGB-mode.gif) 
 
 *Live Answer Feature*  
 ![Live Answer Mode](preview/live.png)  
