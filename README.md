@@ -12,8 +12,8 @@ A modern, responsive calculator built using **Svelte**, featuring a **live answe
 ✅ **Smart parentheses handling** (Automatically adds `(` or `)`)  
 ✅ **Calculation history** (View the last 5 calculations)  
 ✅ **Responsive UI** with a clean, modern layout  
-✅ **Smooth animated dark mode transition**  
-✅ **Minimalist dark mode toggle button**  
+✅ **Smooth animated dark 7 RGB modeS transition**  
+✅ **Minimalist theme mode toggle button**  
 
 ## Installation & Usage  
 
