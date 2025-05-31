@@ -44,7 +44,8 @@ A modern, responsive calculator built using **Svelte**, featuring a **live answe
 ![Calculator Dark Mode](preview/dark-mode.png)  
 
 *RGB Mode*  
-![Calculator RGB Mode](preview/RGB-mode.gif) 
+![Calculator RGB Mode](https://raw.githubusercontent.com/Vivek-k001/Modern-Calculator/main/preview/RGB-mode.gif)
+
 
 *Live Answer Feature*  
 ![Live Answer Mode](preview/live.png)  
